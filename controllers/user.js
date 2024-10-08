@@ -83,6 +83,9 @@ module.exports.getUserDetails = (req, res) => {
 // Update user to an admin | admin functionality
 module.exports.setUserAsAdmin = (req, res) => {
   const userId = req.params.id;
+  if (!userId) {
+    return res.status(400).send({ error: 'UserId is required' });
+  }
 
   return User.findByIdAndUpdate(userId, {isAdmin: true}, { new: true}).then(result => {
     
@@ -91,7 +94,7 @@ module.exports.setUserAsAdmin = (req, res) => {
       } else {
         return res.status(200).send({ updatedUser: result });
       }
-      
+
   }).catch(err => errorHandler(err, req, res));
 }
 

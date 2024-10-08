@@ -24,22 +24,23 @@ module.exports.createProduct = (req, res) => {
 }
 
 
+
 module.exports.getAllProducts = (req, res) => {
     Product.find({}).then(result => {
-        if(result.length <= 0) {
-            return res.status(404).send({message: "No product found!"})
+        if (result.length <= 0) {
+            return res.status(404).send({ message: "No product found" });
         }
-        return res.status(200).send({result});
+        return res.status(200).send({ result });
     }).catch(err => errorHandler(err, req, res));
 }
 
 
 module.exports.getAllActiveProducts = (req, res) => {
-    Product.find({isActive: true}).then(result => {
-        if(result.length <= 0) {
-            return res.status(404).send({message: "No active product found!"})
+    Product.find({ isActive: true }).then(result => {
+        if (result.length <= 0) {
+            return res.status(404).send({ message: "No active product found" });
         }
-        return res.status(200).send({result});
+        return res.status(200).send({ result });
     }).catch(err => errorHandler(err, req, res));
 }
 
@@ -62,12 +63,13 @@ module.exports.updateProductInfo = (req, res) => {
             name: req.body.name,
             description: req.body.description,
             price: req.body.price
-        }
+        },
+        {new :true}
     ).then(result => {
             if(result){
                 res.status(200).send({ success: true, message: 'Product updated successfully'});
             } else {
-                res.status(404).send({ message: 'Product not found'});
+                res.status(404).send({ error: 'Product not found'});
             }
         }
     ).catch(err => errorHandler(err, req, res));
@@ -77,7 +79,7 @@ module.exports.updateProductInfo = (req, res) => {
 module.exports.archiveProduct = (req, res) => {
     const  id  = req.params.id;
 
-    return Product.findByIdAndUpdate(id, {isActive: false}).then(result => {
+    return Product.findByIdAndUpdate(id, {isActive: false}, {new:true}).then(result => {
             if(!result){
                 return res.status(404).send({ error: 'Product not found'});
             } else if(!result.isActive) {
@@ -99,7 +101,7 @@ module.exports.archiveProduct = (req, res) => {
 module.exports.activateProduct = (req, res) => {
     const  id  = req.params.id;
 
-    return Product.findByIdAndUpdate(id, {isActive: true}).then(result => {
+    return Product.findByIdAndUpdate(id, {isActive: true}, { new: true }).then(result => {
             if(!result){
                 return res.status(404).send({ error: 'Product not found'});
             } else if(result.isActive) {

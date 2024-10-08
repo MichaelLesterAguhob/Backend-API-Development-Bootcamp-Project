@@ -17,4 +17,4 @@ router.patch("/:id/archive", verify, verifyAdmin, productController.archiveProdu
 router.patch("/:id/activate", verify, verifyAdmin, productController.activateProduct);
 
 
-module.exports = router;
+module.exports = router; 
