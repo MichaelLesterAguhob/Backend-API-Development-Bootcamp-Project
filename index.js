@@ -18,6 +18,7 @@ app.use('/users', userRoutes);
 
 
 
-app.listen(process.env.PORT, () => console.log(`API is now running on port: ${process.env.PORT}`));
-
+if(require.main === module) {
+	app.listen(process.env.PORT, () => console.log(`API is now online on port ${process.env.PORT}`));
+};
 module.exports = {app, mongoose};
