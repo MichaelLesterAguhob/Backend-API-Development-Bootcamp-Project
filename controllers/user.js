@@ -4,6 +4,31 @@ const bcrypt = require("bcryptjs");
 const auth = require("../auth");
 const {errorHandler} = require("../auth");
 
+// Sending email
+const nodemailer = require("nodemailer");
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASSWORD
+  }
+})
+
+function sendEmail(receiver, name, res) {
+  const mailOptions = {
+    from: process.EMAIL_USER,
+    to: receiver,
+    subject: "Successfully Registratered!",
+    text: `Hello! ${name} Thank you for signing up in our Ecommerce App!`
+  }
+  transporter.sendMail(mailOptions, (error, info) => {
+    if(error) {
+      return res.status(500).send(error.toString());
+    } 
+  })
+}
+
 // Registration
 module.exports.registerUser = (req, res) => {
     let newUser = new User({
@@ -36,9 +61,20 @@ module.exports.registerUser = (req, res) => {
       return res.status(400).send({ message: 'Password must be atleast 8 characters long.' });
     }
   
-    return newUser.save()
-    .then((result) => res.status(201).send({ message: 'User registered successfully', result}))
-    .catch(err => errorHandler(err, req, res))
+    User.find({email: req.body.email}).then(result => {
+      if(result) {
+        return res.status(409).send({message: "Email already exists!"})
+      }
+      
+      return newUser.save()
+      .then((result) => {
+        res.status(201).send({ message: 'User registered successfully', result});
+        sendEmail(email, firstName, res);
+      }).catch(err => errorHandler(err, req, res))
+
+    }).catch(err => errorHandler(err, req, res))
+
+    
   };
 
 
