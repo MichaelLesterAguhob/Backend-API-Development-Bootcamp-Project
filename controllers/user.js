@@ -89,9 +89,9 @@ module.exports.setUserAsAdmin = async (req, res) => {
           userId, {isAdmin: true}, { new: true} 
       );
 
-      if (!updatedUser) {
-          return res.status(404).send({ message: 'User not found.' });
-      }
+      // if (!updatedUser) {
+      //     return res.status(404).send({ message: 'User not found.' });
+      // }
 
       return res.status(200).send({ message: 'User updated as admin successfully.' });
   } catch (error) {
