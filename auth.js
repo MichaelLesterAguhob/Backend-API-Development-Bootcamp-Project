@@ -12,7 +12,7 @@ module.exports.createAccessToken = (user) => {
 }
 
 module.exports.verify = (req, res, next) => {
-	console.log(req.headers.authorization); //
+	// console.log(req.headers.authorization); //
 	let token = req.headers.authorization;
 
 	if(typeof token === 'undefined') {
