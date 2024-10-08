@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post("/register", userController.registerUser);
 router.post("/login", userController.loginUser);
-router.get("/details", userController.getUserDetails);
+router.get("/details", verify, userController.getUserDetails);
 router.patch("/:id/set-as-admin", verify, verifyAdmin, userController.setUserAsAdmin);
 router.patch("/update-password", verify, userController.changePassword);
 
