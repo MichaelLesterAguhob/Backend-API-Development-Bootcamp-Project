@@ -27,20 +27,22 @@ module.exports.createProduct = (req, res) => {
 
 module.exports.getAllProducts = (req, res) => {
     Product.find({}).then(result => {
-        if (result.length <= 0) {
-            return res.status(404).send({ message: "No product found" });
+        if (result.length > 0) {
+             res.status(200).send({ result });
+        } else {
+             res.status(404).send({ message: "No product found" });
         }
-        return res.status(200).send({ result });
     }).catch(err => errorHandler(err, req, res));
 }
 
 
 module.exports.getAllActiveProducts = (req, res) => {
     Product.find({ isActive: true }).then(result => {
-        if (result.length <= 0) {
-            return res.status(404).send({ message: "No active product found" });
+        if (result.length > 0) {
+             res.status(200).send({ result });
+        } else {
+             res.status(404).send({ message: "No active product found" });
         }
-        return res.status(200).send({ result });
     }).catch(err => errorHandler(err, req, res));
 }
 
