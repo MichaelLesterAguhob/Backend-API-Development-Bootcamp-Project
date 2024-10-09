@@ -85,9 +85,9 @@ module.exports.loginUser = (req, res) => {
   }
 
   return User.findOne({ email: req.body.email }).then((result) => {
-      // if (!result) { 
-      //   return res.status(404).send({ error: "No email found" });
-      // } else {
+      if (!result) { 
+        return res.status(404).send({ error: "No email found" });
+      } else {
 
         const isPasswordCorrect = bcrypt.compareSync(req.body.password, result.password);
 
@@ -97,7 +97,7 @@ module.exports.loginUser = (req, res) => {
             return res.status(401).send({ error: "Email and password do not match" });
         }
 
-      // }
+      }
     })
     .catch((err) => errorHandler(err, req, res));
 };
