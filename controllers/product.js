@@ -1,6 +1,6 @@
 
 const Product = require('../models/Product')
-const auth = require("../auth");
+
 const {errorHandler} = require("../auth");
 
 module.exports.createProduct = (req, res) => {

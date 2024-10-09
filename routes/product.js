@@ -1,6 +1,5 @@
 const express = require('express');
 
-const userController = require("../controllers/user");
 const productController = require("../controllers/product");
 
 const { verify, verifyAdmin } = require("../auth");
