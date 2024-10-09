@@ -7,31 +7,31 @@ const {errorHandler} = require("../auth");
 
 module.exports.getCart = async (req, res) => {
     const id = req.user.id;
-    const isUserAdmin = User.findById(id);
-    if(isUserAdmin.isAdmin === false) {
+    // const isUserAdmin = User.findById(id);
+    // if(isUserAdmin.isAdmin === false) {
         Cart.find({userId: id}).then(cart => {
-            if(!cart) {
-                res.status(404).send({message: "No cart found!"})
-            } else {
+            if(cart.length > 0) {
                 res.status(200).send({cart});
+            } else {
+                res.status(404).send({message: "No cart found!"})
             }
         }).catch(err => errorHandler(err, req, res));
-    } else {
-        return res.status(400).send({message: "Admin is forbidden"});
-    }
+    // } else {
+    //     return res.status(400).send({message: "Admin is forbidden"});
+    // }
 };
 
 
 module.exports.addToCart = async (req, res) => {
     const userId = req.user.id; 
 
-    const isUserAdmin = User.findById(userId);
-    if(isUserAdmin.isAdmin === false) {
+    // const isUserAdmin = User.findById(userId);
+    // if(isUserAdmin.isAdmin === false) {
 
         const { productId, quantity, subtotal } = req.body;
 
         if (!productId || !quantity || !subtotal) {
-            return res.status(400).send({ message: "ProductId, quantity, and subtotal are required." });
+            return res.status(201).send({ message: "ProductId, quantity, and subtotal are required." });
         }
         let cart = await Cart.findOne({ userId });
         if (!cart) {
@@ -56,9 +56,9 @@ module.exports.addToCart = async (req, res) => {
         await cart.save().then(cart => {
             res.status(200).send({ message: "Item added to cart successfully", cart })
         }).catch(err => errorHandler(err, req,res));
-    } else {
-        return res.status(400).send({message: "Admin is forbidden"});
-    }
+    // } else {
+    //     return res.status(400).send({message: "Admin is forbidden"});
+    // }
 };
 
 
