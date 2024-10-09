@@ -94,3 +94,50 @@ module.exports.updateCartQuantity = async (req, res) => {
         return res.status(400).send({message: "Admin is forbidden"});
     }
 };
+
+
+module.exports.removeFromCart = async (req, res) => {
+    const userId = req.user.id;
+    try {
+        const cart = await Cart.findOne({ userId });
+        if (!cart) {
+            return res.status(404).send({ message: "Cart not found." });
+        }
+
+        const itemIndex = cart.cartItems.findIndex(item => item.productId.toString() === req.params.id);
+        if (itemIndex === -1) {
+            return res.status(404).send({ message: "Item not found in cart" });
+        }
+
+        cart.cartItems.splice(itemIndex, 1);
+        cart.totalPrice = cart.cartItems.reduce((total, item) => total + item.subtotal, 0);
+        const updatedCart = await cart.save();
+
+        res.status(200).send({ message: "Item removed from cart successfully", updatedCart });
+    } catch (err) {
+        errorHandler(err, req, res);
+    }
+};
+
+module.exports.clearCart = async (req, res) => {
+    const userId = req.user.id;
+    try {
+        const cart = await Cart.findOne({ userId });
+        if (!cart) {
+            return res.status(404).send({ message: "Cart not found." });
+        }
+
+        if (cart.cartItems.length > 0) {
+            cart.cartItems = [];
+            cart.totalPrice = 0;
+            const updatedCart = await cart.save();
+            res.status(200).send({ message: "Cart cleared successfully", updatedCart });
+        }else {
+            return res.status(404).send({ message: "Cart is empty" });
+        }
+
+        
+    } catch (err) {
+        errorHandler(err, req, res);
+    }
+};

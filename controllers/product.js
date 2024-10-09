@@ -127,5 +127,29 @@ module.exports.activateProduct = (req, res) => {
 }
 
 
+module.exports.searchProductByName = (req, res) => {
+    Product.find({name: req.body.name}).then(result => {
+        if(result) {
+             res.status(200).send(result);
+        } else {
+             res.status(404).send({message: "Product not found"})
+        }
+    }).catch(err => errorHandler(err, req, res));
+}
+
+
+module.exports.searchProductByPrice = (req, res) => {
+    Product.find(
+        {
+            price: { $gte: req.body.minPrice, $lte: req.body.maxPrice }
+        })
+        .then(result => {
+            if(result) {
+                res.status(200).send(result);
+            } else {
+                res.status(404).send({message: "Product not found"})
+            }
+        }).catch(err => errorHandler(err, req, res));
+}
 
 
