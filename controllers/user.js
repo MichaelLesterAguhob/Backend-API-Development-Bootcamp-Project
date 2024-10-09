@@ -5,29 +5,29 @@ const auth = require("../auth");
 const {errorHandler} = require("../auth");
 
 // Sending email
-const nodemailer = require("nodemailer");
+// const nodemailer = require("nodemailer");
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASSWORD
-  }
-})
+// const transporter = nodemailer.createTransport({
+//   service: 'gmail',
+//   auth: {
+//     user: process.env.EMAIL_USER,
+//     pass: process.env.EMAIL_PASSWORD
+//   }
+// })
 
-function sendEmail(receiver, name, res) {
-  const mailOptions = {
-    from: process.EMAIL_USER,
-    to: receiver,
-    subject: "Successfully Registratered!",
-    text: `Hello! ${name} Thank you for signing up in our Ecommerce App!`
-  }
-  transporter.sendMail(mailOptions, (error, info) => {
-    if(error) {
-      return res.status(500).send(error.toString());
-    } 
-  })
-}
+// function sendEmail(receiver, name, res) {
+//   const mailOptions = {
+//     from: process.EMAIL_USER,
+//     to: receiver,
+//     subject: "Successfully Registratered!",
+//     text: `Hello! ${name} Thank you for signing up in our Ecommerce App!`
+//   }
+//   transporter.sendMail(mailOptions, (error, info) => {
+//     if(error) {
+//       return res.status(500).send(error.toString());
+//     } 
+//   })
+// }
 
 // Registration
 module.exports.registerUser = (req, res) => {
@@ -69,7 +69,7 @@ module.exports.registerUser = (req, res) => {
       return newUser.save()
       .then((result) => {
         res.status(201).send({ message: 'User registered successfully', result});
-        sendEmail(email, firstName, res);
+        // sendEmail(email, firstName, res);
       }).catch(err => errorHandler(err, req, res))
 
     }).catch(err => errorHandler(err, req, res))
