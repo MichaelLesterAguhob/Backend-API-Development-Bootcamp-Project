@@ -108,10 +108,10 @@ module.exports.getUserDetails = (req, res) => {
   const {id} = req.user;
 
   return User.findById(id).then(user => {
-    if(user) {
-      return res.status(200).send({user});
-    } else {
+    if(!user) {
       return res.status(404).send({error: "User not found"});
+    } else {
+      return res.status(200).send({user});
     }
   }).catch(err => errorHandler(err, req, res));
 }
@@ -126,7 +126,7 @@ module.exports.setUserAsAdmin = (req, res) => {
   return User.findByIdAndUpdate(userId, {isAdmin: true}, { new: true}).then(result => {
     
       if(!result) {
-        return res.status(404).send({ error: 'User not found' });
+        return res.status(404).send({ error: "User not found" });
       } else {
         return res.status(200).send({ updatedUser: result });
       }
