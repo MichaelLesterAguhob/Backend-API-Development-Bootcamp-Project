@@ -23,7 +23,7 @@ module.exports.verify = (req, res, next) => {
 		jwt.verify(token, process.env.JWT_SECRET_KEY, function(err, decodedToken) {
 
 		if(err) {
-			return res.status(403).send({
+			return res.status(404).send({
 				auth: "Failed",
 				message: err.message
 			})
