@@ -85,7 +85,7 @@ module.exports.loginUser = (req, res) => {
   }
 
   return User.findOne({ email: req.body.email }).then((result) => {
-      if (!result) { 
+      if (result == null) { 
         return res.status(404).send({ error: "No email found" });
       } else {
 
@@ -107,31 +107,47 @@ module.exports.loginUser = (req, res) => {
 module.exports.getUserDetails = (req, res) => {
   const {id} = req.user;
 
-  return User.findById(id).then(user => {
-    if(!user) {
-      return res.status(404).send({error: "User not found"});
-    } else {
-      return res.status(200).send({user});
-    }
-  }).catch(err => errorHandler(err, req, res));
+  return User.findById(req.user.id).select('-password').then(result => {
+      if(result) { 
+          return res.status(200).send({ user: result });
+      } else {
+          return res.status(404).send({ error: 'User not found' });
+      }
+  })
+  .catch(err => errorHandler(err, req, res));
 }
 
 // Update user to an admin | admin functionality
-module.exports.setUserAsAdmin = (req, res) => {
-  const userId = req.params.id;
-  if (!userId) {
-    return res.status(400).send({ error: 'UserId is required' });
+module.exports.setUserAsAdmin = async (req, res) => {
+    try {
+      const { id } = req.params;
+
+      if (!id) return res.status(400).send({ message: "User ID is required" });
+
+      const user = await User.findById(id);
+      if (!user) return res.status(404).send({ error: "User not found" });
+
+      user.isAdmin = true;
+      await user.save().then((updatedUser) => 
+      res.status(200).send({ updatedUser}))
+  } 
+  catch (error) {
+      return res.status(500).send({ message: "Server error", error: error.message });
   }
+  // const userId = req.params.id;
+  // if (!userId) {
+  //   return res.status(400).send({ error: 'UserId is required' });
+  // }
 
-  return User.findByIdAndUpdate(userId, {isAdmin: true}, { new: true}).then(result => {
+  // return User.findByIdAndUpdate(userId, {isAdmin: true}, { new: true}).then(result => {
     
-      if(!result) {
-        return res.status(404).send({ error: "User not found" });
-      } else {
-        return res.status(200).send({ updatedUser: result });
-      }
+  //     if(!result) {
+  //       return res.status(404).send({ error: "User not found" });
+  //     } else {
+  //       return res.status(200).send({ updatedUser: result });
+  //     }
 
-  }).catch(err => errorHandler(err, req, res));
+  // }).catch(err => errorHandler(err, req, res));
 }
 
 
