@@ -16,10 +16,10 @@ mongoose.connection.once('open', () => console.log('Now connected to Database'))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/users', userRoutes);
-app.use('/products', productRoutes);
-app.use('/cart', cartRoutes);
-app.use('/orders', orderRoutes);
+app.use('/b8/users', userRoutes);
+app.use('/b8/products', productRoutes);
+app.use('/b8/cart', cartRoutes);
+app.use('/b8/orders', orderRoutes);
 
 
 

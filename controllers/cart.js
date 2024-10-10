@@ -1,5 +1,4 @@
 
-const User = require('../models/User');
 const Product = require('../models/Product');
 const Cart = require('../models/Cart');
 const {errorHandler} = require("../auth");
@@ -65,8 +64,7 @@ module.exports.addToCart = async (req, res) => {
 module.exports.updateCartQuantity = async (req, res) => {
     const id = req.user.id;
 
-    const isUserAdmin = User.findById(id);
-    if(isUserAdmin.isAdmin === false) {
+    if(req.user.isAdmin === false) {
         const {productId, newQuantity} = req.body;
 
         const cart = await Cart.findOne({userId: id});

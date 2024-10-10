@@ -1,0 +1,13 @@
+
+{
+    "url": "",
+    "routesPrefix":{
+
+        "users": "/b8/users",
+        "products": "/b8/products",
+        "orders": "/b8/orders",
+        "cart": "/b8/cart"
+
+    }
+}
+

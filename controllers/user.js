@@ -139,7 +139,9 @@ module.exports.setUserAsAdmin = (req, res) => {
 module.exports.changePassword = async (req, res) => {
   try {
     const { newPassword } = req.body;
-
+    if(newPassword.length < 8) {
+      return res.status(400).send({ message: 'Password must be atleast 8 characters long.' });
+    }
     const { id } = req.user; 
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
