@@ -126,7 +126,7 @@ module.exports.setUserAsAdmin = (req, res) => {
   return User.findByIdAndUpdate(userId, {isAdmin: true}, { new: true}).then(result => {
     
       if(!result) {
-        return res.status(404).send({ error: 'User not Found' });
+        return res.status(404).send({ error: 'User not found' });
       } else {
         return res.status(200).send({ updatedUser: result });
       }

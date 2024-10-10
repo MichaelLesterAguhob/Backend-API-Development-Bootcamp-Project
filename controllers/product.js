@@ -25,13 +25,13 @@ module.exports.createProduct = (req, res) => {
 
 
 
-module.exports.getAllProducts = (req, res) => {
+module.exports.getAllProducts = (req, res) => { 
     Product.find({}).then(result => {
-        if (result.length > 0) {
+        // if (result.length > 0) {
              res.status(200).send( result );
-        } else {
-             res.status(404).send({ message: "No product found" });
-        }
+        // } else {
+        //      res.status(404).send({ message: "No product found" });
+        // }
     }).catch(err => errorHandler(err, req, res));
 }
 
