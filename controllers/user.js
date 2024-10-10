@@ -107,11 +107,11 @@ module.exports.loginUser = (req, res) => {
 module.exports.getUserDetails = (req, res) => {
   const {id} = req.user;
 
-  User.findById(id).then(user => {
+  return User.findById(id).then(user => {
     if(user) {
-      res.status(200).send({user});
+      return res.status(200).send({user});
     } else {
-      res.status(404).send({error: "User not found"});
+      return res.status(404).send({error: "User not found"});
     }
   }).catch(err => errorHandler(err, req, res));
 }
