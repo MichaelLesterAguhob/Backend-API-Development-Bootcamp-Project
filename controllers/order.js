@@ -12,7 +12,7 @@ module.exports.createOrder = async (req, res) => {
     }
     
     if(userCart.cartItems.length <= 0) {
-        return res.status(400).send({message: "No items to checkout"})
+        return res.status(400).send({error: "No items to checkout"})
     }
 
     const productOrdered = userCart.cartItems.map(item => ({
