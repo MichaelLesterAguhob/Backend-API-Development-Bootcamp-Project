@@ -94,7 +94,7 @@ module.exports.loginUser = (req, res) => {
         if (isPasswordCorrect) {
             return res.status(200).send({access : auth.createAccessToken(result)});
         } else {
-            return res.status(401).send({ error: "Email and password do not match" });
+            return res.status(404).send({ error: "Email and password do not match" });
         }
 
       }
@@ -111,7 +111,7 @@ module.exports.getUserDetails = (req, res) => {
     if(user) {
       res.status(200).send({user});
     } else {
-      res.status(200).send({error: "User not found"});
+      res.status(404).send({error: "User not found"});
     }
   }).catch(err => errorHandler(err, req, res));
 }
