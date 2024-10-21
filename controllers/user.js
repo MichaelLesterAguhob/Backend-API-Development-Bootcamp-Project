@@ -63,7 +63,7 @@ module.exports.registerUser = (req, res) => {
   
     User.find({email: req.body.email}).then(result => {
       if(result.length > 0) {
-        return res.status(409).send({message: "Email already exists!"})
+        return res.status(409).send({message: "Email already exists."})
       }
       
       return newUser.save()
@@ -81,12 +81,12 @@ module.exports.registerUser = (req, res) => {
 // Authentication
 module.exports.loginUser = (req, res) => {
   if(!req.body.email.includes('@')) {
-    return res.status(400).send({ error: "Invalid Email" });
+    return res.status(400).send({ message: "Invalid Email" });
   }
 
   return User.findOne({ email: req.body.email }).then((result) => {
       if (result == null) { 
-        return res.status(404).send({ error: "No email found" });
+        return res.status(404).send({ message: "No email found" });
       } else {
 
         const isPasswordCorrect = bcrypt.compareSync(req.body.password, result.password);
@@ -94,7 +94,7 @@ module.exports.loginUser = (req, res) => {
         if (isPasswordCorrect) {
             return res.status(200).send({access : auth.createAccessToken(result)});
         } else {
-            return res.status(401).send({ error: "Email and password do not match" });
+            return res.status(401).send({ message: "Email and password do not match" });
         }
 
       }
@@ -105,9 +105,9 @@ module.exports.loginUser = (req, res) => {
 
 // get user details here
 module.exports.getUserDetails = (req, res) => {
-  return User.findById(req.user.id).then(result => {
-    if(result) {
-      return res.status(200).send({user: result});
+  return User.findById(req.user.id).then(user => {
+    if(user) {
+      return res.status(200).send({user});
     } else {
       return res.status(404).send({ message: "User not found"});
     }
