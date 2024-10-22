@@ -45,7 +45,7 @@ module.exports.getAllActiveProducts = (req, res) => {
         }
     }).catch(err => errorHandler(err, req, res));
 }
-
+ 
 
 module.exports.getSpecificProduct = (req, res) => {
     Product.findById(req.params.id).then(result => {
@@ -129,7 +129,7 @@ module.exports.activateProduct = (req, res) => {
 
 module.exports.searchProductByName = (req, res) => {
     const regex = new RegExp(req.body.name, "i");
-    
+
     Product.find({name: regex}).then(result => {
         if(result) {
              res.status(200).send(result);
