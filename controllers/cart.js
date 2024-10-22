@@ -44,8 +44,8 @@ module.exports.addToCart = async (req, res) => {
         const isItemExists = cart.cartItems.find(item => item.productId === productId);
 
         if (isItemExists) {
-            parseInt(isItemExists.quantity) += parseInt(quantity);
-            parseInt(isItemExists.subtotal) += parseInt(subtotal); 
+            isItemExists.quantity += parseInt(quantity);
+            isItemExists.subtotal += parseInt(subtotal); 
         } else {
             cart.cartItems.push({ productId, quantity, subtotal });
         }
