@@ -128,7 +128,9 @@ module.exports.activateProduct = (req, res) => {
 
 
 module.exports.searchProductByName = (req, res) => {
-    Product.find({name: req.body.name}).then(result => {
+    const regex = new RegExp(req.body.name, "i");
+    
+    Product.find({name: regex}).then(result => {
         if(result) {
              res.status(200).send(result);
         } else {
