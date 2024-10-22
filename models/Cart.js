@@ -8,7 +8,7 @@ const cartSchema = mongoose.Schema({
         required: [true, "UserID is required"]
     }, 
 
-    cartItems: [
+    cartItems: [ 
         {
             productId:{
                 type: String, 
