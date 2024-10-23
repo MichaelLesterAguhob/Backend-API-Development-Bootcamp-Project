@@ -46,7 +46,7 @@ module.exports.getOrders = async (req, res) => {
         if(orders.length <= 0) {
             return res.status(404).send({message: "No orders found"})
         } else {
-            return res.status(200).send({orders: orders})
+            return res.status(200).send({orders})
         }
    }).catch(err => errorHandler(err, req, res));
 }
