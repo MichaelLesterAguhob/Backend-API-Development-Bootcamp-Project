@@ -10,7 +10,7 @@ const cors = require('cors');
 
 const app = express();
 const corsOptions = ({
-    origin: ['http://localhost:8000', 'http://localhost:3000'],
+    origin: ['http://zuitt-bootcamp-prod-481-7994-aguhob.s3-website.us-east-1.amazonaws.com', 'http://localhost:8000', 'http://localhost:3000'],
     credentials: true,
     optionsSuccessStatus: 200
 })
