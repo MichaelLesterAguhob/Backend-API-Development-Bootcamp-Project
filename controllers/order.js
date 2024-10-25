@@ -42,7 +42,7 @@ module.exports.createOrder = async (req, res) => {
 module.exports.getOrders = async (req, res) => {
     const userId = req.user.id;
 
-   await Order.find({userId}).then(orders => {
+   await Order.find({userId}).populate('productOrdered.productId').then(orders => {
         if(orders.length <= 0) {
             return res.status(404).send({message: "No orders found"})
         } else {
