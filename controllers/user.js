@@ -153,3 +153,12 @@ module.exports.changePassword = async (req, res) => {
     res.status(500).send({ message: 'Internal server error' });
   }
 };
+
+
+module.exports.getAllUsers = async (req, res) => {
+    await User.find({}).then(users => {
+        if(users.length > 0) {
+            res.status(200).send(users)
+        }
+    }).catch(error => console.error(error))
+}
