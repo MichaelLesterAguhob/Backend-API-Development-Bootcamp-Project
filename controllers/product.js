@@ -3,14 +3,20 @@ const Product = require('../models/Product')
 
 const {errorHandler} = require("../auth");
 
-module.exports.createProduct = (req, res) => {
+module.exports.createProduct = async (req, res) => {
+    const images = req.files.map(file => ({
+        imagePath: file.path,
+        imageName: file.name
+    }))
+
     const newProduct = new Product({
         name: req.body.name,
         description: req.body.description,
-        price: req.body.price
+        price: req.body.price,
+        images: images
     })
 
-    Product.findOne({name: req.body.name}).then(isExisting => {
+    await Product.findOne({name: req.body.name}).then(isExisting => {
         if(isExisting) {
             return res.status(409).send({message: 'Product already exists'})
         }

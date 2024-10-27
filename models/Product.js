@@ -19,6 +19,18 @@ const productSchema = mongoose.Schema({
         type: Boolean, 
         default: true
     },
+    images: [
+        {
+            imagePath: {
+                type: String,
+                default: 'none'
+            },
+            imageName: {
+                type: String,
+                default: 'none'
+            }  
+        }
+    ],
     createdOn: {
         type: Date,
         default: Date.now
