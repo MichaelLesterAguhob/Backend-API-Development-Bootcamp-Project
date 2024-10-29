@@ -1,5 +1,6 @@
 const express = require('express');
 const multer = require('multer');
+const path = require('path');
 const productController = require("../controllers/product");
 const { verify, verifyAdmin } = require("../auth");
 const router = express.Router();
@@ -15,7 +16,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage})
 
-router.post("/", verify, verifyAdmin, upload.array('imgaes', 10), productController.createProduct);
+router.post("/", verify, verifyAdmin, upload.array('images', 10), productController.createProduct);
 router.get("/all", verify, verifyAdmin, productController.getAllProducts);
 router.get("/active", productController.getAllActiveProducts);
 router.get("/:id", productController.getSpecificProduct);

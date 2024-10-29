@@ -27,7 +27,7 @@ app.use('/b8/users', userRoutes);
 app.use('/b8/products', productRoutes);
 app.use('/b8/cart', cartRoutes);
 app.use('/b8/orders', orderRoutes);
-app.use('/b8/uploads', express.static('./uploads'));
+app.use('/b8/uploads', express.static('uploads'));
 
 
 

@@ -4,29 +4,35 @@ const Product = require('../models/Product')
 const {errorHandler} = require("../auth");
 
 module.exports.createProduct = async (req, res) => {
-    const images = req.files.map(file => ({
-        imagePath: file.path,
-        imageName: file.name
-    }))
-
-    const newProduct = new Product({
-        name: req.body.name,
-        description: req.body.description,
-        price: req.body.price,
-        images: images
-    })
-
-    await Product.findOne({name: req.body.name}).then(isExisting => {
-        if(isExisting) {
-            return res.status(409).send({message: 'Product already exists'})
-        }
-
-        return newProduct.save().then(result => res.status(201).send({
-            success: true,
-            message: 'Product Added Successfully',
-            result
+    try
+    {
+        const images = req.files.map(file => ({
+            imagePath: file.path,
+            imageName: file.name
         }))
-    }).catch(err => errorHandler(err, req, res));
+    
+        const newProduct = new Product({
+            name: req.body.name,
+            description: req.body.description,
+            price: req.body.price,
+            images: images
+        })
+
+        await Product.findOne({name: req.body.name}).then(isExisting => {
+            if(isExisting) {
+                return res.status(409).send({message: 'Product already exists'})
+            }
+            
+            return newProduct.save().then(result => res.status(201).send({
+                success: true,
+                message: 'Product Added Successfully',
+                result
+            }))
+        }).catch(err => {console.error('Error:', err); errorHandler(err, req, res)});
+    } catch(error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
 }
 
 
